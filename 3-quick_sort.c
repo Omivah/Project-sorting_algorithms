@@ -1,72 +1,74 @@
 #include "sort.h"
-
 /**
- * quick_sort - sorts an array with the Quicksort algorithm
- * @array: array of ints to sort
- * @size: size of the array
+ * quick_sort - quicksort algorithm
+ * @array: array to be sorted
+ * @size: size of array
  */
 void quick_sort(int *array, size_t size)
 {
-	if (size < 2)
-	        return;
-	quick_recursion(array, 0, (int)size - 1, size);
+	if (array == NULL || size <= 1)
+		return;
+	sort_alg(array, 0, size - 1, size);
 }
 
 /**
- * quick_recursion - helper function for Quicksort
- * @array: array to sort
- * @left: index of the left element
- * @right: index of the right element
- * @size: size of the array
+ * sort_alg - recursive sorting algorithm
+ * @arr: array
+ * @left: leftmost index
+ * @right: rightmost index
+ * @size: full size of array
  */
-void quick_recursion(int *array, int left, int right, size_t size)
+void sort_alg(int *arr, int left, int right, size_t size)
 {
-        int piv;
+	int pivot;
 
 	if (left < right)
-        {
-		piv = partition(array, left, right, size);
-	        quick_recursion(array, left, piv - 1, size);
-		quick_recursion(array, piv + 1, right, size);
-	}
+	{
+	        pivot = split(arr, left, right, size);
+	        sort_alg(arr, left, pivot - 1, size);
+		sort_alg(arr, pivot + 1, right, size);
+									     }
 }
 
 /**
- * partition - gives a piv index for Quicksort
- * @array: array to find the piv in
- * @left: index of the left element
- * @right: index of the right element
- * @size: size of the array
- *
- * Return: the index of the piv element
+ * split - split array
+ * @arr: array
+ * @left: leftmost index
+ * @right: rightmost index
+ * @size: full array size
+ * Return: pivot index
  */
-int partition(int *array, int left, int right, size_t size)
+int split(int *arr, int left, int right, size_t size)
 {
-        int tmp, i;
-	int j;
+	int i, i2, pivot, tmp;
 
-	i = left - 1;
+	pivot = arr[right];
+	i = left;
 
-	for (j = left; j < right; j++)
+	for (i2 = left; i2 < right; i2++)
 	{
-	       if (array[j] < array[right])
-	       {
-		      i++;
-		      if (i != j)
-		      {
-			      tmp = array[i];
-			      array[i] = array[j];
-			      array[j] = tmp;
-			      print_array(array, size);					   }								  }
+		if (arr[i2] < pivot)
+		{
+			if (i != i2)
+			{
+			       tmp = arr[i2];
+			       arr[i2] = arr[i];
+			       arr[i] = tmp;
+			       print_array(arr, size);
+			}
+			i++;
+		 }
 	}
-	if (array[right] < array[i + 1])
+	if (arr[i] != arr[right])
 	{
-		tmp = array[i + 1];
-		array[i + 1] = array[right];
-		array[right] = tmp;
-		print_array(array, size);
-	}
-	return (i + 1);
+		tmp = arr[i];
+		arr[i] = arr[right];
+		arr[right] = tmp;
+		print_array(arr, size);
+									     }
+
+	return (i);
 }
+
 
 
